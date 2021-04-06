@@ -1,2 +1,2 @@
 # K-MEANS
- Kmeans algorithm
+ Kmeans algorithm made from scratch
