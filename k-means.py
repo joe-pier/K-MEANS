@@ -149,6 +149,7 @@ class kmeans():
         centroid_df = centroid_df[0:3].round(decimals=2)
         centroid_df = centroid_df.add_prefix('centroid ')
         centroid_df = centroid_df.rename(index={0: 'X', 1: 'Y'})
+        centroid_df.to_csv('centroids.csv', header=True, index=True)
         return centroid_df
 
     def predict(self, X):
