@@ -175,22 +175,36 @@ class kmeans():
 
         return df
 
+    def cost(self):
+        '''
+        non funziona in questo modo, dovrei calcolare la distanza di ognuno dei punti dal proprio centroide.
+        cosa che non fa questa funzione
+        :return:
+        '''
+        temp = []
+        for i in self.D:
+            for j in self.centroids:
+                distance_ = distance.euclidean(i, j)
+                squrt = distance_**2
+                temp.append(squrt)
+
+        cost = sum(temp)/len(self.D)
+        return cost
+
 
 if __name__ == "__main__":
+
+    costs = []
+
     test = kmeans(4, dataset, 20, verbose=False, pause=0.2)  # definisco il modello e inserisco i dati
     centroid = test.fit(plot=True)  # fitto il modello e creo i centroidi
+
+
     p_test = test.predict({(-10, 45), (-5, 5), (30, -5), (9, 9), (90, 21), (-11, 43)})  # prova del modello con dati a caso
 
+    print(cost)
+    print('\n')
     print(centroid)  # print dei centroidi
     print('\n')
     print(p_test)  # print delle previsioni
 
-    '''
-    test_2 = kmeans(6, dataset, 20, verbose=False, pause=0.2)  # definisco il modello e inserisco i dati
-    centroid_2 = test_2.fit(plot=True)  # fitto il modello e creo i centroidi
-    p_test_2 = test_2.predict(
-        {(-10, 45), (-5, 5), (30, -5), (9, 9), (90, 21), (-11, 43)})  # prova del modello con dati a caso
-    print(centroid_2)  # print dei centroidi
-    print('\n')
-    print(p_test_2)  # print delle previsioni
-    '''
