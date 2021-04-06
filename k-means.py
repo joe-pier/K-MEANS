@@ -169,7 +169,9 @@ class kmeans():
         df = pd.DataFrame(series)
         df = df.rename(columns={0: 'predicted cluster'}, errors="raise")
 
+
         df.to_csv('predictions.csv', header=True, index=True)
+
 
         return df
 
