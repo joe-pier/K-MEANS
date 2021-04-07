@@ -56,6 +56,8 @@ class kmeans():
 
         self.centroids = set()
 
+        self.datas = []
+
     def Kpoints(self):
         for i in range(0, self.K):
             x = random.randint(int(min(self.df[0])), int(max(self.df[0])))
@@ -87,10 +89,15 @@ class kmeans():
 
     def update(self):
         avarages = set()
+
+        datas_ = []
         # print(list(range(self.K)))
+
         for i in list(range(self.K)):
             # print(self.df[self.df['cluster'] == i])
             data = self.df[self.df['cluster'] == i]
+
+            datas_.append(data)
             if data.empty:
                 # riassegniamo in maniera casuale i centroidi che non hanno valori collegati
                 data = pd.DataFrame({0: (random.randint(int(min(self.df[0])), int(max(self.df[0]))),
@@ -101,6 +108,8 @@ class kmeans():
         if self.verbose == True:
             print(f'iteration {self.n_iter}: {avarages}')
         self.avarages_df = pd.DataFrame(avarages)
+
+        self.datas = datas_
         return avarages
 
     def scatter(self, df_):
@@ -175,34 +184,31 @@ class kmeans():
 
         return df
 
-    def cost(self):
-        '''
-        non funziona in questo modo, dovrei calcolare la distanza di ognuno dei punti dal proprio centroide.
-        cosa che non fa questa funzione
-        :return:
-        '''
-        temp = []
-        for i in self.D:
-            for j in self.centroids:
-                distance_ = distance.euclidean(i, j)
-                squrt = distance_**2
-                temp.append(squrt)
 
-        cost = sum(temp)/len(self.D)
+    def cost(self):
+        for i in self.datas:
+            temp = []
+            for j in range(len(i)):
+                for k in self.centroids:
+                    miao = i.values[j][0:2]
+                    distance_ = distance.euclidean(miao, k)
+                    squrt = distance_ ** 2
+                    temp.append(squrt)
+            cost = sum(temp) / len(self.D)
         return cost
 
 
+
 if __name__ == "__main__":
+    test = kmeans(5, dataset, 20, verbose=False, pause=0.2)  # definisco il modello e inserisco i dati
+    centroid = test.fit(plot=False)  # fitto il modello e creo i centroidi
 
-    costs = []
-
-    test = kmeans(4, dataset, 20, verbose=False, pause=0.2)  # definisco il modello e inserisco i dati
-    centroid = test.fit(plot=True)  # fitto il modello e creo i centroidi
-
+    '''
+    costo = test.cost()
+    print(costo)
+    '''
 
     p_test = test.predict({(-10, 45), (-5, 5), (30, -5), (9, 9), (90, 21), (-11, 43)})  # prova del modello con dati a caso
-
-    print(cost)
     print('\n')
     print(centroid)  # print dei centroidi
     print('\n')
